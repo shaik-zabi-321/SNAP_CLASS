@@ -1,0 +1,9 @@
+
+.bash_history
+.claude.json
+argv.json
+.antigravity
+__pycache__/
+*.pyc
+.venv/
+
