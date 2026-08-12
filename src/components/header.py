@@ -1,20 +1,35 @@
 import streamlit as st
+import base64
+from pathlib import Path
+
+
+@st.cache_data
+def get_base64_image(path):
+    img_bytes = Path(path).read_bytes()
+    return base64.b64encode(img_bytes).decode()
+
+
+LOGO_PATH = "assets/beep_mascot_icon.png"
 
 
 def header_home():
-    st.markdown("""
-        <div style="display:flex; align-items:center; gap:14px; padding:10px 0 24px 0; border-bottom:1px solid #e8ddc9; margin-bottom:32px;">
-            <div style="height:52px; width:52px; border-radius:12px; background:#d97b3f; display:flex; align-items:center; justify-content:center;">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                    <path d="M12 3v2"></path>
-                    <path d="M12 19v2"></path>
-                </svg>
-            </div>
-            <div>
-                <p style="margin:0; font-size:22px; font-weight:700; color:#2d2013;">AttendEase</p>
-                <p style="margin:0; font-size:13px; color:#8a7862;">Face and voice attendance system</p>
-            </div>
+    logo_b64 = get_base64_image(LOGO_PATH)
+
+    st.markdown(f"""
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; margin-bottom:20px; margin-top:20px">
+            <img src='data:image/png;base64,{logo_b64}' style='height:110px;' />
+            <h1 style='text-align:center; color:#2F6B14; margin-top:8px;'>Beep</h1>
+            <p style='text-align:center; color:#5F5E5A; margin-top:-6px;'>Smile, say hi, you're marked present</p>
         </div>
-    """, unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+
+
+def header_dashboard():
+    logo_b64 = get_base64_image(LOGO_PATH)
+
+    st.markdown(f"""
+        <div style="display:flex; align-items:center; justify-content:center; gap:12px">
+            <img src='data:image/png;base64,{logo_b64}' style='height:70px;' />
+            <h2 style='text-align:left; color:#2F6B14;'>Beep</h2>
+        </div>
+                """, unsafe_allow_html=True)

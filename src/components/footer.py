@@ -1,20 +1,29 @@
 import streamlit as st
+from src.components.header import get_base64_image, LOGO_PATH
+
+
+def _render_footer():
+    logo_b64 = get_base64_image(LOGO_PATH)
+    html = (
+        "<div style=\"margin-top:3rem; padding-top:1.5rem; border-top:2px solid #FFE0B8; "
+        "display:flex; flex-direction:column; align-items:center; gap:6px;\">"
+        "<div style=\"display:flex; align-items:center; gap:8px;\">"
+        f"<img src='data:image/png;base64,{logo_b64}' style='height:26px;' />"
+        "<span style=\"font-family:'Baloo 2', sans-serif; font-weight:800; "
+        "color:#2F6B14; font-size:16px;\">Beep</span>"
+        "</div>"
+        "<p style=\"font-family:'Outfit', sans-serif; color:#5F5E5A; font-size:12px; margin:0;\">"
+        "Face + voice attendance, built for your classroom</p>"
+        "<p style=\"font-family:'Outfit', sans-serif; color:#B4B2A9; font-size:11px; margin:4px 0 0;\">"
+        "Made by Your Name Here &nbsp;&middot;&nbsp; Your College Name Here</p>"
+        "</div>"
+    )
+    st.markdown(html, unsafe_allow_html=True)
 
 
 def footer_home():
-    st.markdown("""
-        <div style="display:flex; align-items:center; gap:14px; padding:10px 0 24px 0; border-bottom:1px solid #e8ddc9; margin-bottom:32px;">
-            <div style="height:52px; width:52px; border-radius:12px; background:#d97b3f; display:flex; align-items:center; justify-content:center;">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path>
-                    <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                    <path d="M12 3v2"></path>
-                    <path d="M12 19v2"></path>
-                </svg>
-            </div>
-            <div>
-                <p style="margin:0; font-size:22px; font-weight:700; color:#2d2013;">AttendEase</p>
-                <p style="margin:0; font-size:13px; color:#8a7862;">Face and voice attendance system</p>
-            </div>
-        </div>
-    """, unsafe_allow_html=True)
+    _render_footer()
+
+
+def footer_dashboard():
+    _render_footer()

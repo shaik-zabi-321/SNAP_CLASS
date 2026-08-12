@@ -6,4 +6,9 @@ argv.json
 __pycache__/
 *.pyc
 .venv/
+.vscode
+.streamlit/
+dist/
+
+
 
