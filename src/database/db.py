@@ -3,11 +3,14 @@ import bcrypt
 
 
 def hash_pass(pwd):
-    return bcrypt.hashpw(pwd.encode(), bcrypt.gensalt().decode())
+    return bcrypt.hashpw(
+        pwd.encode("utf-8"),
+        bcrypt.gensalt()
+    ).decode("utf-8")
 
 
 def check_pass(pwd, hased):
-    return bcrypt.checkpw(pwd.encode(), hased.code())
+    return bcrypt.checkpw(pwd.encode(), hased.encode())
 
 
 def check_teacher_exist(username):
@@ -27,7 +30,7 @@ def create_techer(username, password, name):
 
 def teacher_login(username, password):
     response = supabase.table("teachers").select(
-        "a").eq("username", username).execute()
+        "*").eq("username", username).execute()
     if response.data:
         teacher = response.data[0]
         if check_pass(password, teacher['password']):
