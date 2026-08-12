@@ -28,7 +28,7 @@ def header_dashboard():
     logo_b64 = get_base64_image(LOGO_PATH)
 
     st.markdown(f"""
-        <div style="display:flex; align-items:center; justify-content:center; gap:12px">
+        <div style="display:flex; align-items:center; justify-content:center; gap:12px;">
             <img src='data:image/png;base64,{logo_b64}' style='height:70px;' />
             <h2 style='text-align:left; color:#2F6B14;'>Beep</h2>
         </div>
