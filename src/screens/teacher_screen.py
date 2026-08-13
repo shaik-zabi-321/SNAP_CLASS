@@ -22,14 +22,31 @@ def teacher_screen():
     style_base_layout()
 
     # Decide whether to show Login or Register
-    if (
-        "teacher_login_type" not in st.session_state
-        or st.session_state.teacher_login_type == "login"
-    ):
+    if "teacher_data" in st.session_state:
+        teacher_dashboard()
+
+    elif "teacher_login_type" not in st.session_state or st.session_state.teacher_login_type == "login":
         teacher_screen_login()
 
     elif st.session_state.teacher_login_type == "register":
         teacher_screen_register()
+
+
+def teacher_dashboard():
+    teacher_data = st.session_state.teacher_data
+    st.header(f""" welcome,{teacher_data['name']}""")
+
+
+def login_teacher(username, password):
+    if not username or not password:
+        return False
+    teacher = teacher_login(username, password)
+    if teacher:
+        st.session_state.user_role = 'teacher'
+        st.session_state.teacher_data = teacher
+        st.session_state.is_logged_in = True
+        return True
+    return False
 
 
 # =========================================================
@@ -108,10 +125,8 @@ def teacher_screen_login():
         # LOGIN ACTION
         if login_clicked:
 
-            if teacher_login(
-                teacher_username,
-                teacher_password
-            ):
+            if login_teacher(teacher_username, teacher_password):
+
                 st.toast("Welcome back!")
 
                 import time

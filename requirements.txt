@@ -1,20 +1,23 @@
 numpy
 pandas
 
-
 scikit-learn # image classification
 
-dlib-bin #face recognition
+dlib-bin # face recognition
 # face embeddings
-git+https://github.com/ageitgey/face_recognition_models 
+git+https://github.com/ageitgey/face_recognition_models
 setuptools<70.0.0
 
-supabase #data base 
+supabase # data base
 
-bcrypt #hashing
+bcrypt # hashing
 
-segno #qr code generation
+segno # qr code generation
 
-pillow # image processing 
+pillow # image processing
 
 streamlit # deployment
+
+librosa
+webrtcvad-wheels==2.0.14
+resemblyzer
