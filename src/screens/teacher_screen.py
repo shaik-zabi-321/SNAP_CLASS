@@ -34,7 +34,66 @@ def teacher_screen():
 
 def teacher_dashboard():
     teacher_data = st.session_state.teacher_data
-    st.header(f""" welcome,{teacher_data['name']}""")
+    st.subheader(f""" welcome,{teacher_data['name']}""")
+    # LEFT COLUMN
+
+    c1, c2 = st.columns(2, vertical_alignment="center", gap="xxlarge")
+    # LEFT COLUMN
+    with c1:
+        header_dashboard()
+
+        # RIGHT COLUMN
+    with c2:
+
+        # logout
+        if st.button("Log out", key="teacher_login_back_btn", shortcut="control+backspace"):
+            st.session_state['is_logged_in'] = False
+            del st.session_state.teacher_data
+            st.rerun()
+
+    st.space()
+
+    if 'current_teacher_tab' not in st.session_state:
+        st.session_state.current_teacher_tab = 'Take Attendence'
+
+    t1, t2, t3 = st.columns(3)
+
+    with t1:
+        type1 = 'primary' if st.session_state.current_teacher_tab == 'Take Attendence' else 'tertiary'
+        if st.button("Take Attendence", type=type1, width='stretch',):
+            st.session_state.current_teacher_tab = 'Take Attendence'
+            st.rerun()
+
+    with t2:
+        type2 = 'primary' if st.session_state.current_teacher_tab == 'Manage subjects' else 'tertiary'
+        if st.button("Manage subjects", type=type2, width='stretch',):
+            st.session_state.current_teacher_tab = 'Manage subjects'
+            st.rerun()
+    with t3:
+        type3 = 'primary' if st.session_state.current_teacher_tab == 'Attendence records' else 'tertiary'
+        if st.button("Attendence records", type=type3, width='stretch',):
+            st.session_state.current_teacher_tab = 'Attendence records'
+            st.rerun()
+    if st.session_state.current_teacher_tab == 'Take Attendence':
+        take_attendence()
+    if st.session_state.current_teacher_tab == 'Manage subjects':
+        manage_sunjects()
+    if st.session_state.current_teacher_tab == 'Attendence records':
+        attendence_records()
+
+    footer_dashboard()
+
+
+def take_attendence():
+    st.header("Take attendence")
+
+
+def manage_sunjects():
+    st.header("Manage subjects ")
+
+
+def attendence_records():
+    st.header("Manage records ")
 
 
 def login_teacher(username, password):
