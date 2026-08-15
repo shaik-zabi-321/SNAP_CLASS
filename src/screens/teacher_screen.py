@@ -6,10 +6,15 @@ from src.ui.style_base_layout import (
 )
 from src.components.header import header_dashboard
 from src.components.footer import footer_dashboard
+from src.components.dialog import create_subject_dialog
+from src.components.subject_card import subject_card
+from src.components.share_subject import share_subject_dialog
+
 from src.database.db import (
     check_teacher_exist,
     create_techer,
-    teacher_login
+    teacher_login,
+    get_teacher_subjects
 )
 
 
@@ -77,7 +82,7 @@ def teacher_dashboard():
     if st.session_state.current_teacher_tab == 'Take Attendence':
         take_attendence()
     if st.session_state.current_teacher_tab == 'Manage subjects':
-        manage_sunjects()
+        manage_subjects()
     if st.session_state.current_teacher_tab == 'Attendence records':
         attendence_records()
 
@@ -88,8 +93,38 @@ def take_attendence():
     st.header("Take attendence")
 
 
-def manage_sunjects():
-    st.header("Manage subjects ")
+def manage_subjects():
+
+    teacher_id = st.session_state.teacher_data['teacher_id']
+    col1, col2 = st.columns(2)
+    with col1:
+        st.header("Manage subjects ")
+    with col2:
+        if st.button("create new subject", width='stretch'):
+            create_subject_dialog(teacher_id)
+
+    # list all subjects
+    subjects = get_teacher_subjects(teacher_id)
+    if subjects:
+        for sub in subjects:
+            stats = [
+                ("🧑‍🎓", "students", sub['total_students']),
+                ("📅", "classes", sub['total_classes'])
+            ]
+
+        def share_btn():
+            if st.button(f"share code:{sub['name']}", key=f"share {sub['subject_code']}"):
+                share_subject_dialog(sub['name'], sub['subject_code'])
+        subject_card(
+            name=sub['name'],
+            code=sub['subject_code'],
+            section=sub['section'],
+            stats=stats,
+            footer_callback=share_btn
+        )
+
+    else:
+        st.warning("No sunjects found ")
 
 
 def attendence_records():
