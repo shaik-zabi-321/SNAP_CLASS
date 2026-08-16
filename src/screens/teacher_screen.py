@@ -9,6 +9,7 @@ from src.components.footer import footer_dashboard
 from src.components.dialog import create_subject_dialog
 from src.components.subject_card import subject_card
 from src.components.share_subject import share_subject_dialog
+from src.components.add_photo_dialog import add_photo_dialog
 
 from src.database.db import (
     check_teacher_exist,
@@ -91,6 +92,24 @@ def teacher_dashboard():
 
 def take_attendence():
     st.header("Take attendence")
+    teacher_id = st.session_state.teacher_data['teacher_id']
+
+    if 'attendence_images' not in st.session_state:
+        st.session_state.attendence_images = []
+        subject = get_teacher_subjects(teacher_id)
+        if not subject:
+            st.warning("Please create a subject ")
+    subject_options = {
+        f"{s['name']}-{s['subject_code']}": s['subject_id'] for s in subject}
+    col1, col2 = st.columns(2)
+    with col1:
+        selected_subject_label = st.selectbox(
+            'select subject', options=list(subject_options.keys()))
+    with col2:
+        if st.button('ADD photos', type='primary', width='stretch'):
+            add_photo_dialog()
+
+    selected_subject_id = subject_options[selected_subject_label]
 
 
 def manage_subjects():

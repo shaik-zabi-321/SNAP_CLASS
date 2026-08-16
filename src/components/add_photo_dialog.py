@@ -1,0 +1,37 @@
+import streamlit as st
+from PIL import Image
+
+
+@st.dialog("Create or Upload photos")
+def add_photo_dialog():
+    st.write("Add Photos")
+    if 'photo_tab' not in st.session_state:
+        st.session_state.photo_tab = 'camera'
+    t1, t2 = st.columns(2)
+
+    with t1:
+        type_camera = 'primary' if st.session_state.photo_tab == 'camera'else 'tertiary'
+        if st.button('camera', type=type_camera, width='stretch'):
+            st.session_state.photo_tab = 'camera'
+    with t2:
+        type_upload = 'primary' if st.session_state.photo_tab == 'upload'else 'tertiary'
+        if st.button('upload', type=type_upload, width='stretch'):
+            st.session_state.photo_tab = 'upload'
+
+    if st.session_state.photo_tab == 'camera':
+        camera_photo = st.camera_input('Take photo', key='dialog_cam')
+        if camera_photo:
+            st.session_state.attendence_images.append(Image.open(camera_photo))
+            st.toast('Captured photo sucessfully')
+            st.rerun()
+    if st.session_state.photo_tab == 'upload':
+        upload_files = st.file_uploader("upload files", type=[
+                                        'jpg', 'png', 'jpeg'], accept_multiple_files=True, key='dialog_cam')
+        if upload_files:
+            for f in upload_files:
+                st.session_state.attendence_images.append(Image.open(f))
+                st.toast("Photos Uploaded Sucessfully")
+                st.rerun()
+    st.divider()
+    if st.button('Done', type='primary', width='stretch'):
+        st.rerun()
