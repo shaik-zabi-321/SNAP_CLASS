@@ -1,3 +1,4 @@
+streamlit 
 numpy
 pandas
 
@@ -16,7 +17,7 @@ segno # qr code generation
 
 pillow # image processing
 
-streamlit # deployment
+# deployment
 
 librosa
 webrtcvad-wheels==2.0.14

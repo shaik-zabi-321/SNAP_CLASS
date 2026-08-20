@@ -17,6 +17,7 @@ from src.pipelines.facepipeline import predict_attendance
 from src.database.config import supabase
 from src.components.attendence_log import add_attendence_logs
 from src.components.voice_attendece_dialog import voice_attendence_dialog
+from src.database.db import get_attendence_for_teacher
 from src.database.db import (
     check_teacher_exist,
     create_techer,
@@ -216,6 +217,39 @@ def manage_subjects():
 
 def attendence_records():
     st.header("Manage records ")
+    teacher_id = st.session_state.teacher_data['teacher_id']
+    records = get_attendence_for_teacher(teacher_id)
+    if not records:
+        return
+    data = []
+    for r in records:
+        ts = r.get('timestamp')
+        data.append({
+            "ts_group": ts.split(".")[0] if ts else None,
+            "time": datetime.fromisoformat(ts).strftime("%Y-%m-%d %I:%M%p") if ts else "N'A",
+            "subject": r['subjects']['name'],
+            "subject_code": r['subjects']['subject_code'],
+            "is_present": bool(r.get('is_present', False))
+        })
+    df = pd.DataFrame(data)
+
+    summary = (
+        df.groupby(['ts_group', 'time', 'subject', 'subject_code']).agg(
+            present_count=('is_present', 'sum'),
+            total_count=('is_present', 'count')
+
+
+        ).reset_index()
+    )
+    summary['Attendence stats'] = (
+        "✅️"+summary['present_count'].astype(str)+"/"
+        + summary['total_count'].astype(str)+' students'
+    )
+
+    display_df = (summary.sort_values(by='ts_group', ascending=False)
+                  [['time', 'subject', 'subject_code', 'Attendence stats']]
+                  )
+    st.dataframe(display_df, width='stretch', hide_index=True)
 
 
 def login_teacher(username, password):
